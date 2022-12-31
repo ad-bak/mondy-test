@@ -67,6 +67,113 @@ const TicketPage = () => {
               onChange={handleChange}
               value={formData.category}
             />
+            <label>Priority</label>
+            <div className="multiiple-input-container">
+              <input
+                id="priority-1"
+                name="priority"
+                type="radio"
+                value={1}
+                onChange={handleChange}
+              />
+              <label htmlFor="priority-1">1</label>
+              <input
+                id="priority-2"
+                name="priority"
+                type="radio"
+                value={2}
+                onChange={handleChange}
+              />
+              <label htmlFor="priority-2">2</label>
+              <input
+                id="priority-3"
+                name="priority"
+                type="radio"
+                value={3}
+                onChange={handleChange}
+              />
+              <label htmlFor="priority-3">3</label>
+              <input
+                id="priority-4"
+                name="priority"
+                type="radio"
+                value={4}
+                onChange={handleChange}
+              />
+              <label htmlFor="priority-4">4</label>
+              <input
+                id="priority-5"
+                name="priority"
+                type="radio"
+                value={5}
+                onChange={handleChange}
+              />
+              <label htmlFor="priority-5">5</label>
+            </div>
+            {editMode && (
+              <>
+                <input
+                  type="range"
+                  id="progress"
+                  name="progress"
+                  value={formData.progress}
+                  min="0"
+                  max="100"
+                  onChange={handleChange}
+                />
+                <label htmlFor="progress">Progress</label>
+
+                <label>Status</label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                >
+                  <option selected={formData.status === "done"} value="done">
+                    Done
+                  </option>
+                  <option
+                    selected={formData.status === "in progress"}
+                    value="in progress"
+                  >
+                    In Progress
+                  </option>
+                  <option selected={formData.status === "stuck"} value="stuck">
+                    Stuck
+                  </option>
+                  <option
+                    selected={formData.status === "not started"}
+                    value="not started"
+                  >
+                    Not Started
+                  </option>
+                </select>
+              </>
+            )}
+            <input type="submit" />
+          </section>
+          <section>
+            <label htmlFor="owner">Owner</label>
+            <input
+              type="text"
+              name="owner"
+              id="owner"
+              onChange={handleChange}
+              required={true}
+              value={FormData.owner}
+            />{" "}
+            <label htmlFor="avatar">Avatar</label>
+            <input
+              type="url"
+              name="avatar"
+              id="avatar"
+              onChange={handleChange}
+              required={true}
+              value={FormData.avatar}
+            />
+            <div className="img-preview">
+              {formData.avatar && <img src={formData.avatar} alt="avatar" />}
+            </div>
           </section>
         </form>
       </div>
