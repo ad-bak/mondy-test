@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
 import { useState } from "react";
 
 const TicketPage = () => {
@@ -6,6 +9,8 @@ const TicketPage = () => {
     progress: 0,
     timestamp: new Date().toISOString(),
   });
+
+  const navigate = useNavigate();
 
   const editMode = false;
 
@@ -16,28 +21,39 @@ const TicketPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-  };
 
+    if (!editMode) {
+      const response = await axios.post("http://localhost:8000/tickets", {
+        formData,
+      });
+
+      const success = response.status === 200;
+      if (success) {
+        navigate("/");
+      }
+    }
+  };
   const categories = ["bug", "feature", "question"];
 
   console.log(formData);
   return (
     <div className="ticket">
-      <h1>{editMode ? "Update your Ticket" : "Create a Ticket"}</h1>
+      <h1>{editMode ? "Update Your Ticket" : "Create a Ticket"}</h1>
       <div className="ticket-container">
         <form onSubmit={submitHandler}>
           <section>
             <label htmlFor="title">Title</label>
             <input
-              type="text"
-              name="title"
               id="title"
+              name="title"
+              type="text"
               onChange={handleChange}
               required={true}
-              value={FormData.title}
+              value={formData.title}
             />
+
             <label htmlFor="description">Description</label>
             <input
               id="description"
@@ -67,49 +83,56 @@ const TicketPage = () => {
               onChange={handleChange}
               value={formData.category}
             />
+
             <label>Priority</label>
-            <div className="multiiple-input-container">
+            <div className="multiple-input-container">
               <input
                 id="priority-1"
                 name="priority"
                 type="radio"
-                value={1}
                 onChange={handleChange}
+                value={1}
+                checked={formData.priority == 1}
               />
               <label htmlFor="priority-1">1</label>
               <input
                 id="priority-2"
                 name="priority"
                 type="radio"
-                value={2}
                 onChange={handleChange}
+                value={2}
+                checked={formData.priority == 2}
               />
               <label htmlFor="priority-2">2</label>
               <input
                 id="priority-3"
                 name="priority"
                 type="radio"
-                value={3}
                 onChange={handleChange}
+                value={3}
+                checked={formData.priority == 3}
               />
               <label htmlFor="priority-3">3</label>
               <input
                 id="priority-4"
                 name="priority"
                 type="radio"
-                value={4}
                 onChange={handleChange}
+                value={4}
+                checked={formData.priority == 4}
               />
               <label htmlFor="priority-4">4</label>
               <input
                 id="priority-5"
                 name="priority"
                 type="radio"
-                value={5}
                 onChange={handleChange}
+                value={5}
+                checked={formData.priority == 5}
               />
               <label htmlFor="priority-5">5</label>
             </div>
+
             {editMode && (
               <>
                 <input
@@ -129,20 +152,20 @@ const TicketPage = () => {
                   value={formData.status}
                   onChange={handleChange}
                 >
-                  <option selected={formData.status === "done"} value="done">
+                  <option selected={formData.status == "done"} value="done">
                     Done
                   </option>
                   <option
-                    selected={formData.status === "in progress"}
-                    value="in progress"
+                    selected={formData.status == "working on it"}
+                    value="working on it"
                   >
-                    In Progress
+                    Working on it
                   </option>
-                  <option selected={formData.status === "stuck"} value="stuck">
+                  <option selected={formData.status == "stuck"} value="stuck">
                     Stuck
                   </option>
                   <option
-                    selected={formData.status === "not started"}
+                    selected={formData.status == "not started"}
                     value="not started"
                   >
                     Not Started
@@ -150,29 +173,32 @@ const TicketPage = () => {
                 </select>
               </>
             )}
+
             <input type="submit" />
           </section>
+
           <section>
             <label htmlFor="owner">Owner</label>
             <input
-              type="text"
-              name="owner"
               id="owner"
+              name="owner"
+              type="owner"
               onChange={handleChange}
               required={true}
-              value={FormData.owner}
-            />{" "}
+              value={formData.owner}
+            />
+
             <label htmlFor="avatar">Avatar</label>
             <input
-              type="url"
-              name="avatar"
               id="avatar"
+              name="avatar"
+              type="url"
               onChange={handleChange}
-              required={true}
-              value={FormData.avatar}
             />
             <div className="img-preview">
-              {formData.avatar && <img src={formData.avatar} alt="avatar" />}
+              {formData.avatar && (
+                <img src={formData.avatar} alt="image preview" />
+              )}
             </div>
           </section>
         </form>
