@@ -23,6 +23,7 @@ nav {
   flex-direction: column;
   justify-content: space-between;
   min-width: 10%;
+  width: 10%;
 }
 
 nav .logo-container,
